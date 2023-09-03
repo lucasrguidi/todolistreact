@@ -1,30 +1,30 @@
-import React from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import React from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 const AddTask = ({ tasks, setTasks }) => {
-  const [title, setTitle] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [category, setCategory] = React.useState('');
-  const [color, setColor] = React.useState('#0d6efd');
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [category, setCategory] = React.useState("");
+  const [color, setColor] = React.useState("#0d6efd");
   const [error, setError] = React.useState(false);
 
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    if (title.trim() != '' && category != '') {
+    if (title.trim() != "" && category != "") {
       setError(false);
       const id = generateId();
 
-      const newTask = { id, title, description, category, color }
-      const newTasks = [...tasks, newTask]
+      const newTask = { id, title, description, category, color };
+      const newTasks = [...tasks, newTask];
       setTasks(newTasks);
 
-      localStorage.setItem('taskDate', JSON.stringify(newTasks))
+      localStorage.setItem("taskData", JSON.stringify(newTasks));
 
-      setTitle('');
-      setDescription('');
-      setCategory('');
+      setTitle("");
+      setDescription("");
+      setCategory("");
     } else {
       setError(true);
     }
@@ -39,9 +39,9 @@ const AddTask = ({ tasks, setTasks }) => {
       <h1 className="text-center">Adicionar tarefa</h1>
       <Form className="d-flex flex-column gap-3 container-width">
         <Form.Group>
-          <Form.Label htmlFor='title'>Título</Form.Label>
+          <Form.Label htmlFor="title">Título</Form.Label>
           <Form.Control
-            id='title'
+            id="title"
             value={title}
             onChange={({ target }) => {
               setTitle(target.value);
@@ -49,9 +49,9 @@ const AddTask = ({ tasks, setTasks }) => {
           ></Form.Control>
         </Form.Group>
         <Form.Group>
-          <Form.Label htmlFor='description'>Descrição</Form.Label>
+          <Form.Label htmlFor="description">Descrição</Form.Label>
           <Form.Control
-            id='description'
+            id="description"
             as="textarea"
             rows={3}
             value={description}
@@ -61,9 +61,9 @@ const AddTask = ({ tasks, setTasks }) => {
 
         <Form.Group className="d-flex align-items-center justify-content-between gap-3">
           <div className="container-width">
-            <Form.Label htmlFor='category'>Categoria</Form.Label>
+            <Form.Label htmlFor="category">Categoria</Form.Label>
             <Form.Select
-              id='category'
+              id="category"
               value={category}
               onChange={({ target }) => setCategory(target.value)}
             >
@@ -76,9 +76,9 @@ const AddTask = ({ tasks, setTasks }) => {
             </Form.Select>
           </div>
           <div className="container-width d-flex align-items-center flex-column">
-            <Form.Label htmlFor='color'>Cor</Form.Label>
+            <Form.Label htmlFor="color">Cor</Form.Label>
             <Form.Control
-              id='color'
+              id="color"
               type="color"
               title="Escolha a cor"
               value={color}
