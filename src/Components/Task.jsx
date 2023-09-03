@@ -1,7 +1,7 @@
-import React from 'react';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import { BsTrash } from 'react-icons/bs';
+import React from "react";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import { BsTrash } from "react-icons/bs";
 
 const Task = ({ task, deleteTask, completeTask }) => {
   return (
@@ -10,15 +10,15 @@ const Task = ({ task, deleteTask, completeTask }) => {
       className="m-auto container-width"
       style={
         task.completed
-          ? { textDecoration: 'line-through' }
-          : { textDecoration: '' }
+          ? { textDecoration: "line-through" }
+          : { textDecoration: "" }
       }
     >
       <Card.Header className="d-flex align-items-center justify-content-between">
         <Card.Title>{task.title}</Card.Title>
         <div
           className="w-25 rounded-pill"
-          style={{ backgroundColor: task.color, height: '1em' }}
+          style={{ backgroundColor: task.color, height: "1em" }}
         ></div>
       </Card.Header>
       <Card.Body>
@@ -27,10 +27,10 @@ const Task = ({ task, deleteTask, completeTask }) => {
       </Card.Body>
       <Card.Footer className="d-flex justify-content-between">
         <Button
-          className="btn btn-success w-25"
+          className="btn btn-success w-sm-25 w-auto "
           onClick={() => completeTask(task.id)}
         >
-          {task.completed ? 'Completa' : 'Completar'}
+          {task.completed ? "Completa" : "Completar"}
         </Button>
         <Button className="btn btn-danger" onClick={() => deleteTask(task.id)}>
           <BsTrash />
