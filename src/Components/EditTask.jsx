@@ -10,11 +10,11 @@ function EditTask({
   show,
   tasks,
   setTasks,
-  modalShow,
-  setModalShow,
+  setEditModalShow,
+  categories,
 }) {
   function cancelEdit() {
-    setModalShow(false);
+    setEditModalShow(false);
     setEditingTask(null);
   }
 
@@ -36,7 +36,8 @@ function EditTask({
           editData={editingTask}
           tasks={tasks}
           setTasks={setTasks}
-          setModalShow={setModalShow}
+          setEditModalShow={setEditModalShow}
+          categories={categories}
         />
       </Modal.Body>
       <Modal.Footer>

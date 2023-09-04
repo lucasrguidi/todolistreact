@@ -2,8 +2,17 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Error from "./Error";
+import { BsPencil } from "react-icons/bs";
 
-const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
+const AddTask = ({
+  tasks,
+  setTasks,
+  editData,
+  setEditModalShow,
+  categories,
+  categoriesModalShow,
+  setCategoriesModalShow,
+}) => {
   const [editing, setEditing] = React.useState(false);
   const [title, setTitle] = React.useState(editData?.title ?? "");
   const [description, setDescription] = React.useState(
@@ -16,8 +25,12 @@ const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
   React.useEffect(() => {
     if (editData) {
       setEditing(true);
+    } else {
+      setEditing(false);
     }
   }, [editData]);
+
+  console.log(categories);
 
   function saveTask(event) {
     event.preventDefault();
@@ -75,7 +88,7 @@ const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
 
       localStorage.setItem("taskData", JSON.stringify(newTasks));
 
-      setModalShow(false);
+      setEditModalShow(false);
       setEditing(false);
     } else {
       setError("Os campos Título e Categoria são obrigatórios");
@@ -116,20 +129,32 @@ const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
         </Form.Group>
 
         <Form.Group className="d-flex align-items-center justify-content-between gap-3">
-          <div className="container-width">
-            <Form.Label htmlFor="category">Categoria</Form.Label>
-            <Form.Select
-              id="category"
-              value={category}
-              onChange={({ target }) => setCategory(target.value)}
-            >
-              <option disabled value="">
-                Selecione
-              </option>
-              <option>Estudos</option>
-              <option>Pessoal</option>
-              <option>Trabalho</option>
-            </Form.Select>
+          <div className="container-width d-flex gap-3  align-items-end">
+            <div>
+              <Form.Label htmlFor="category">Categoria</Form.Label>
+              <Form.Select
+                id="category"
+                value={category}
+                onChange={({ target }) => setCategory(target.value)}
+              >
+                <option disabled value="">
+                  Selecione
+                </option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </Form.Select>
+            </div>
+            <div>
+              <Button
+                className="btn btn-primary text-light"
+                onClick={() => setCategoriesModalShow(true)}
+              >
+                <BsPencil />
+              </Button>
+            </div>
           </div>
           <div className="container-width d-flex align-items-center flex-column">
             <Form.Label htmlFor="color">Cor</Form.Label>
@@ -147,7 +172,7 @@ const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
           onClick={
             editing ? () => updateTask(event, editData) : () => saveTask(event)
           }
-          className="btn-primary w-25 m-auto m-lg-0"
+          className="btn-primary w-100 w-sm-25 m-auto m-lg-0 mt-3"
         >
           {editing ? "Atualizar" : "Adicionar"}
         </Button>
