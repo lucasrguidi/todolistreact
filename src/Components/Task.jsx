@@ -1,9 +1,9 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { BsTrash } from "react-icons/bs";
+import { BsTrash, BsPencil } from "react-icons/bs";
 
-const Task = ({ task, deleteTask, completeTask }) => {
+const Task = ({ task, deleteTask, completeTask, editTask }) => {
   return (
     <Card
       key={task.id}
@@ -32,9 +32,20 @@ const Task = ({ task, deleteTask, completeTask }) => {
         >
           {task.completed ? "Completa" : "Completar"}
         </Button>
-        <Button className="btn btn-danger" onClick={() => deleteTask(task.id)}>
-          <BsTrash />
-        </Button>
+        <div className="d-flex gap-2">
+          <Button
+            className="btn btn-warning text-light"
+            onClick={() => editTask(task.id)}
+          >
+            <BsPencil />
+          </Button>
+          <Button
+            className="btn btn-danger"
+            onClick={() => deleteTask(task.id)}
+          >
+            <BsTrash />
+          </Button>
+        </div>
       </Card.Footer>
     </Card>
   );

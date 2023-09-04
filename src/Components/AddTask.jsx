@@ -2,14 +2,23 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-const AddTask = ({ tasks, setTasks }) => {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [category, setCategory] = React.useState("");
-  const [color, setColor] = React.useState("#0d6efd");
+const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
+  const [editing, setEditing] = React.useState(false);
+  const [title, setTitle] = React.useState(editData?.title ?? "");
+  const [description, setDescription] = React.useState(
+    editData?.description ?? ""
+  );
+  const [category, setCategory] = React.useState(editData?.category ?? "");
+  const [color, setColor] = React.useState(editData?.color ?? "#0d6efd");
   const [error, setError] = React.useState(false);
 
-  function handleFormSubmit(event) {
+  React.useEffect(() => {
+    if (editData) {
+      setEditing(true);
+    }
+  }, [editData]);
+
+  function saveTask(event) {
     event.preventDefault();
 
     if (title.trim() != "" && category != "") {
@@ -30,13 +39,38 @@ const AddTask = ({ tasks, setTasks }) => {
     }
   }
 
+  function updateTask(event, editData) {
+    event.preventDefault();
+
+    if (title.trim() != "" && category != "") {
+      setError(false);
+      const id = editData.id;
+
+      const updatedTask = { id, title, description, category, color };
+
+      const currentTaskIndex = tasks.findIndex(
+        (task) => task.id === editData.id
+      );
+      tasks[currentTaskIndex] = updatedTask;
+      const newTasks = [...tasks];
+      setTasks(newTasks);
+
+      localStorage.setItem("taskData", JSON.stringify(newTasks));
+
+      setModalShow(false);
+      setEditing(false);
+    } else {
+      setError(true);
+    }
+  }
+
   function generateId() {
     return (Math.random() * 100).toFixed();
   }
 
   return (
-    <div className="d-flex flex-column gap-3 align-items-center border-bottom py-3">
-      <h1 className="text-center">Adicionar tarefa</h1>
+    <div className="d-flex flex-column gap-3 align-items-center py-3">
+      {!editing && <h1 className="text-center">Adicionar tarefa</h1>}
       <Form className="d-flex flex-column gap-3 container-width">
         <Form.Group>
           <Form.Label htmlFor="title">Título</Form.Label>
@@ -91,11 +125,14 @@ const AddTask = ({ tasks, setTasks }) => {
             Os campos Título e Categoria são obrigatórios
           </div>
         )}
+
         <Button
-          onClick={handleFormSubmit}
+          onClick={
+            editing ? () => updateTask(event, editData) : () => saveTask(event)
+          }
           className="btn-primary w-25 m-auto m-lg-0"
         >
-          Adicionar
+          {editing ? "Atualizar" : "Adicionar"}
         </Button>
       </Form>
     </div>
