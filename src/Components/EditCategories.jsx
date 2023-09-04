@@ -52,7 +52,7 @@ function EditCategories({
           {categories.map((category) => (
             <ListGroup.Item
               key={category}
-              className="d-flex justify-content-between align-items-center"
+              className="d-flex justify-content-between align-items-center fs-5 fw-bold"
             >
               {category}
               <Button
