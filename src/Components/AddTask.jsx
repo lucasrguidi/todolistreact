@@ -1,6 +1,7 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Error from "./Error";
 
 const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
   const [editing, setEditing] = React.useState(false);
@@ -35,7 +36,11 @@ const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
       setDescription("");
       setCategory("");
     } else {
-      setError(true);
+      setError("Os campos Título e Categoria são obrigatórios");
+
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
     }
   }
 
@@ -51,6 +56,19 @@ const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
       const currentTaskIndex = tasks.findIndex(
         (task) => task.id === editData.id
       );
+
+      if (
+        tasks[currentTaskIndex].title === updatedTask.title &&
+        tasks[currentTaskIndex].description === updatedTask.description &&
+        tasks[currentTaskIndex].category === updatedTask.category &&
+        tasks[currentTaskIndex].color === updatedTask.color
+      ) {
+        setError("É necessário ao menos uma modificação.");
+        setTimeout(() => {
+          setError(false);
+        }, 3000);
+        return;
+      }
       tasks[currentTaskIndex] = updatedTask;
       const newTasks = [...tasks];
       setTasks(newTasks);
@@ -60,7 +78,11 @@ const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
       setModalShow(false);
       setEditing(false);
     } else {
-      setError(true);
+      setError("Os campos Título e Categoria são obrigatórios");
+
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
     }
   }
 
@@ -120,12 +142,7 @@ const AddTask = ({ tasks, setTasks, editData, setModalShow, modalShow }) => {
             ></Form.Control>
           </div>
         </Form.Group>
-        {error && (
-          <div className="alert alert-danger" role="alert">
-            Os campos Título e Categoria são obrigatórios
-          </div>
-        )}
-
+        {error && <Error text={error} />}
         <Button
           onClick={
             editing ? () => updateTask(event, editData) : () => saveTask(event)
